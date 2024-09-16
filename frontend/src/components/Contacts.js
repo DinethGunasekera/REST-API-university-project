@@ -1,11 +1,31 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { Form, FormControl } from "react-bootstrap";
+import axios from "axios";
+
 
 function Contatcts() {
+
+  const [userContacts, setUserContacts] = useState([]);
+
+  useEffect(() => {
+    function getUsers() {
+      axios
+        .get("http://localhost:5000/user/:nid/contact")
+        .then((res) => {
+          console.log(res.data);
+          setUserContacts(res.data);
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+    getUsers();
+  }, []);
   return (
-    <div class="container">
+    <div className="container">
+      <h1>User Contacts Details</h1>
+
       <div style={{ paddingtop: "200" }}>
         <Form className="d-flex">
           <FormControl
@@ -14,11 +34,13 @@ function Contatcts() {
             className="me-2"
             aria-label="Search"
           />
-          <Button class="btn btn-primary" variant="outline-success">Search</Button>
+          <Button className="btn btn-primary" variant="outline-success">
+            Search
+          </Button>
         </Form>
       </div>
 
-      <table class="table table-hover">
+      <table className="table table-hover">
         <thead>
           <tr>
             <th scope="col">Job Seeker Name</th>
